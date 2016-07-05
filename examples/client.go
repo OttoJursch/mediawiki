@@ -3,12 +3,9 @@ package main
 import (
 	"encoding/xml"
 	"fmt"
-	"github.com/sadbox/mediawiki"
-	"io"
+	"github.com/OttoJursch/mediawiki"
 	"io/ioutil"
 	"log"
-	"os"
-	"strings"
 )
 
 var config Config
@@ -38,67 +35,72 @@ func main() {
 
 	// LOGIN
 	// the username and passsword are required, but the domain is not
-	client.Domain = config.Domain
+//	client.Domain = config.Domain
 
-	err = client.Login(config.Username, config.Password)
+/*	err = client.Login(config.Username, config.Password)
 	if err != nil {
 		log.Fatal(err)
 	}
 	defer client.Logout()
+    */
 
-	// READ A PAGE
-	page, err := client.Read("Main Page")
-	if err != nil {
-		log.Fatal(err)
-	}
-	for _, rev := range page.Revisions {
-		fmt.Println(rev.Body)
-	}
+	//// READ A PAGE
+	//page, err := client.Read("Main Page")
+	//if err != nil {
+	//	log.Fatal(err)
+	//}
+	//for _, rev := range page.Revisions {
+	//	fmt.Println(rev.Body)
+	//}
 
-	// UPLOAD A FILE
-	file, err := os.Open("effective_go.pdf")
-	if err != nil {
-		log.Fatal(err)
-	}
-	err = client.Upload("SomeFile.pdf", file)
-	if err != nil {
-		log.Fatal(err)
-	}
+	//// UPLOAD A FILE
+	//file, err := os.Open("effective_go.pdf")
+	//if err != nil {
+	//	log.Fatal(err)
+	//}
+	//err = client.Upload("SomeFile.pdf", file)
+	//if err != nil {
+	//	log.Fatal(err)
+	//}
 
-	// DOWNLOAD A FILE
-	src, err := client.Download("File:SomeFile.pdf")
-	if err != nil {
-		log.Fatal(err)
-	}
-	defer src.Close()
+	//// DOWNLOAD A FILE
+	//src, err := client.Download("File:SomeFile.pdf")
+	//if err != nil {
+	//	log.Fatal(err)
+	//}
+	//defer src.Close()
 
-	dst, err := os.Create("/tmp/test_download")
-	if err != nil {
-		log.Fatal(err)
-	}
+	//dst, err := os.Create("/tmp/test_download")
+	//if err != nil {
+	//	log.Fatal(err)
+	//}
 
-	_, err = io.Copy(dst, src)
-	if err != nil {
-		log.Fatal(err)
-	}
+	//_, err = io.Copy(dst, src)
+	//if err != nil {
+	//	log.Fatal(err)
+	//}
 
-	fi, err := os.Stat("/tmp/test_download")
-	if err != nil {
-		log.Fatal(err)
-	}
-	fmt.Println(fi.Name(), fi.Size())
+	//fi, err := os.Stat("/tmp/test_download")
+	//if err != nil {
+	//	log.Fatal(err)
+	//}
+	//fmt.Println(fi.Name(), fi.Size())
 
-	// EDIT A PAGE
-	userStrs := []string{"User:", config.Username, "/sandbox"}
-	editConfig := map[string]string{
-		"title": strings.Join(userStrs, ""),
-		"summary": "THIS IS WHAT SHOWS UP IN THE LOG",
-		"text": "THE ENTIRE TEXT OF THE PAGE",
-	}
+	//// EDIT A PAGE
+	//userStrs := []string{"User:", config.Username, "/sandbox"}
+	//editConfig := map[string]string{
+	//	"title": strings.Join(userStrs, ""),
+	//	"summary": "THIS IS WHAT SHOWS UP IN THE LOG",
+	//	"text": "THE ENTIRE TEXT OF THE PAGE",
+	//}
 
-	err = client.Edit(editConfig)
+	//err = client.Edit(editConfig)
 
-	if err != nil {
-		log.Fatal(err)
-	}
+	//if err != nil {
+	//	log.Fatal(err)
+	//}
+    values := make(map[string]string)
+    values["plnamespace"] = "(Articles)"
+    links := client.GetPageLinks("Albert Einstein", values)
+    fmt.Println(links)
 }

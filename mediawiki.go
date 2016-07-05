@@ -492,6 +492,23 @@ func (m *MWApi) Read(pageName string) (*Page, error) {
 	return page, nil
 }
 
+func (m *MWApi) GetPageLinks(pageName string, values map[string]string)  ([]byte){
+    values["titles"] = pageName;
+    values["prop"] = "links"
+    values["action"] = "query";
+    val, _ :=  m.API(values);
+    return val
+}
+
+func (m *MWApi) GetPageCategories(pageName string, values map[string]string) ([]byte){
+    values["titles"] = pageName;
+    values["prop"] = "categories"
+    values["action"] = "query";
+    values["format"] = "json";
+    val, _ :=  m.API(values);
+    return val
+}
+
 // API is a generic interface to the Mediawiki API.
 // Refer to the MediaWiki API reference for details.
 //
